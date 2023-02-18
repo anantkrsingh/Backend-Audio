@@ -10,7 +10,13 @@
   "author": "Anant",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/storage": "^6.9.3",
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.1",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "mongoose": "^6.9.2",
+    "multer": "^1.4.5-lts.1",
     "nodemon": "^2.0.20"
   }
 }
