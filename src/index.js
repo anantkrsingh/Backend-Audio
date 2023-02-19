@@ -18,7 +18,7 @@ app.get("/",(req,res)=>{
     res.send(req.query.name);
 })
 app.use(bodyParser.json());
-app.listen("3000","192.168.29.70",()=>{
+app.listen("3000",()=>{
 
 });
 
