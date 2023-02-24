@@ -14,11 +14,12 @@ const app = express();
 app.use('/api',authRoutes);
 
 
+
 app.get("/",(req,res)=>{
     res.send(req.query.name);
 })
 app.use(bodyParser.json());
-app.listen("3000",()=>{
+app.listen("3000","10.16.24.229",()=>{
 
 });
 
