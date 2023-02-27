@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const env = require('dotenv');
 const bodyParser = require('body-parser');
-
+const {Server} = require('socket.io');
 
 
 env.config();
@@ -19,7 +19,7 @@ app.get("/",(req,res)=>{
     res.send(req.query.name);
 })
 app.use(bodyParser.json());
-app.listen("3000","10.16.24.229",()=>{
+app.listen("3000",()=>{
 
 });
 

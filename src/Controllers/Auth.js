@@ -39,7 +39,30 @@ exports.signup = (req, res, next) => {
 
 exports.login = (req, res) => {
   User.findOne({ email: req.query.email }).exec((error, user) => {
-    if (error) res.status(201).json({});
+    if (error) res.status(201).json({status:0,message:"User Not Registered"});
+    else{
+      if(user.authenticate(req.query.password)){
+        const token = jwt.sign({
+          name:user.name,
+          email:user.email
+        },
+        process.env.JWT_SECRET,{
+          expiresIn:"1d"
+        }
+        )
+
+        const {name,email} = user;
+
+        res.status(200).json({
+          token,
+          user:{
+            name,email
+          }
+        })
+      }else{
+        res.status(200).json({message:"Email or Password Incorrect"})
+      }
+    }
   });
 };
 
