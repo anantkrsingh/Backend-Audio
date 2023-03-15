@@ -5,20 +5,25 @@ const bodyParser = require('body-parser');
 const {Server} = require('socket.io');
 
 
+
+
 env.config();
 const authRoutes = require('./Routes/Auth');
+const { createMeeting } = require('./Controllers/Generator');
 const app = express();
 
-
-
+app.use(express.json())
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended:true}))
 app.use('/api',authRoutes);
+app.use('/api/meeting', createMeeting)
 
 
 
 app.get("/",(req,res)=>{
     res.send(req.query.name);
 })
-app.use(bodyParser.json());
+
 app.listen("3000",()=>{
 
 });
