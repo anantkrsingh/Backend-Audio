@@ -14,7 +14,11 @@ exports.createMeeting = (req,res) =>{
             else {
                 const uid = 0;
                 const role = RtcRole.PUBLISHER;
-                const roomToken = RtcTokenBuilder.buildTokenWithUid(process.env.APP_ID, process.env.APP_CERTIFICATE, roomId ,  uid , role , process.env.TOKEN_EXPIRY_TIME  )
+                const expirationTimeInSeconds = 360000
+                const currentTimestamp = Math.floor(Date.now() / 1000)
+                console.log(currentTimestamp);
+                const privilegeExpiredTs = currentTimestamp + expirationTimeInSeconds
+                const roomToken = RtcTokenBuilder.buildTokenWithUid(process.env.APP_ID, process.env.APP_CERTIFICATE, roomId ,  uid , role , privilegeExpiredTs  )
                 console.log("Token Generated" , roomToken);
                 const _meeting = new meetingSchema({
                         host,roomId,roomToken,maxParticipant
@@ -32,6 +36,20 @@ exports.createMeeting = (req,res) =>{
                
             }
 
+    })
+
+}
+
+
+exports.getRooms = (req,res) => {
+    meetingSchema.find({
+    }).exec((error,rooms)=>{
+        if(error) res.status(400).json({status:0,message:"Error Occurred"})
+        res.status(201).json({
+            status:1,
+            message:"Success",
+            rooms:rooms
+        })
     })
 
 }

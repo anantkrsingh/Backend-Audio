@@ -14,6 +14,7 @@ exports.signup = (req, res, next) => {
         phone,
         password,
         isVerified: false,
+        avatar:"1"
       });
       _user.save((error, data) => {
         if (error) res.status(500).json({ status: 0, message: error });
