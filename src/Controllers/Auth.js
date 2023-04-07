@@ -64,7 +64,7 @@ exports.googleLogin = (req,res) =>{
         if (error) res.status(500).json({ status: 0, message: error });
         if (data) {
           console.log("Google Login Success");
-          res.status(201).json({ status: 1, message: "Registered Successfully" });
+          res.status(201).json({ status: 1, message: user._id });
         }
       });
 
@@ -108,6 +108,13 @@ exports.login = (req, res) => {
     }
   });
 };
+
+exports.getUser = (req,res)=>{
+  User.findOne({_id:req.query.user}).exec((error,user)=>{
+    if(error) res.status(500).json({status:0, message:"Error User"})
+    else if(user) res.status(201).json({status:1,user})
+  })
+}
 
 exports.verify = (req, res) => {
   User.updateOne(
