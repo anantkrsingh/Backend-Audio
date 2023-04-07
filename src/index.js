@@ -31,8 +31,8 @@ app.get("/",(req,res)=>{
     res.send(req.query.name);
 })
 
-app.listen("3000","192.168.1.5",()=>{
-  console.log('Server Started 192.168.1.5 port = 3000');
+app.listen("3000",()=>{
+  console.log('Server Started port = 3000');
 });
 
 mongoose
