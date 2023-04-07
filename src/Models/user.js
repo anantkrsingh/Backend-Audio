@@ -29,6 +29,13 @@ const user = new mongoose.Schema({
         ,
         required: true
     },
+    loginType:{
+        type:String,
+        required:true
+    },
+    isPremium: {
+        type:Boolean
+    }
 
 },{timestamps:true});
 
@@ -39,10 +46,9 @@ user.virtual('password').set(
 )
 
 user.methods = {
-    authenticate:function(password){
-        return bcrypt.compareSync(password,this.hash_password)
+    authenticate: function(password){
+        return bcrypt.compareSync(password, this.hash_password)
     }
 }
 
-
-module.exports = mongoose.model('Usersasas',user);
+module.exports = mongoose.model('AudioUser',user);

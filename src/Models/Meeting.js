@@ -13,11 +13,21 @@ const meetingSchema  = new mongoose.Schema({
     roomToken: {
         type:String,
         required : true,
-
     },
     maxParticipant : {
         type: String,
         required: true
+    },
+    enrolledAvatars:{
+        type:String
+    },
+    audioMuted : {
+        type: Boolean,
+       
+    },
+    videoMuted : {
+        type: Boolean,
+        
     }
 
 }, {timestamps:true});

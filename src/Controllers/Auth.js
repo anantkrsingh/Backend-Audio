@@ -1,11 +1,11 @@
 const User = require("../Models/user");
-const jwt =  require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 const user = require("../Models/user");
 
 exports.signup = (req, res, next) => {
   User.findOne({ email: req.query.email }).exec((error, user) => {
     if (user)
-      res.status(201).json({ status: 1, message: "User Already Registered" });
+      res.status(201).json({ status: 0, message: "User Already Registered" });
     else {
       const { name, email, phone, password } = req.query;
       const _user = new User({
@@ -14,64 +14,108 @@ exports.signup = (req, res, next) => {
         phone,
         password,
         isVerified: false,
-        avatar:"1"
+        avatar: "1",
+        loginType: "Email & Password",
+        isPremium: false,
       });
       _user.save((error, data) => {
         if (error) res.status(500).json({ status: 0, message: error });
         if (data) {
-          const token = jwt.sign({
-            email:req.query.email
-          },process.env.JWT_SECRET,{
-            expiresIn:"10min"
-          });
-          const link  = `http://10.16.24.229:3000/api/verify/?token=${token}`
+          const token = jwt.sign(
+            {
+              email: req.query.email,
+            },
+            process.env.JWT_SECRET,
+            {
+              expiresIn: "10min",
+            }
+          );
+          const link = `http://192.168.1.7:3000/api/verify/?token=${token}`;
           console.log(link);
-            req.email = req.query.email,
-            req.link = link;
-        //   res
-        //     .status(201)
-        //     .json({ status: 1, message: "User Successfully Registered" }),
-            next();
+          (req.email = req.query.email), (req.link = link);
+          //   res
+          //     .status(201)
+          //     .json({ status: 1, message: "User Successfully Registered" }),
+          next();
         }
       });
     }
   });
 };
 
-exports.login = (req, res) => {
+exports.googleLogin = (req,res) =>{
+  console.log("Google SignUP Req...");
   User.findOne({ email: req.query.email }).exec((error, user) => {
-    if (error) res.status(201).json({status:0,message:"User Not Registered"});
-    else{
-      if(user.authenticate(req.query.password)){
-        const token = jwt.sign({
-          name:user.name,
-          email:user.email
-        },
-        process.env.JWT_SECRET,{
-          expiresIn:"1d"
+    console.log(user);
+    console.log(error);
+    if(!user) {
+      const { name, email, phone, password } = req.query;
+      const _user = new User({
+        name,
+        email,
+        phone,
+        password,
+        isVerified: true,
+        avatar: "1",
+        loginType: "Google Account",
+        isPremium: false,
+      });
+      _user.save((error, data) => {
+        if (error) res.status(500).json({ status: 0, message: error });
+        if (data) {
+          console.log("Google Login Success");
+          res.status(201).json({ status: 1, message: "Registered Successfully" });
         }
-        )
+      });
 
-        const {name,email} = user;
 
-        res.status(200).json({
-          token,
-          user:{
-            name,email
-          }
-        })
-      }else{
-        res.status(200).json({message:"Email or Password Incorrect"})
+    }else res.status(200).json({status:1,message:"PreUser"})
+  })
+}
+
+exports.login = (req, res) => {
+  console.log("Login Req...");
+  User.findOne({ email: req.body.email }).exec((error, user) => {
+    if (error)
+      res.status(400).json({ status: 0, message: "User Not Registered" });
+    else if(user){
+      console.log("User Found");
+        if(user.loginType == "Google Account"){
+          console.log("Google Account");
+          res.status(201).json({
+            status: 0,
+            message: "Please Login Through Google Account",
+          });
+        } else if
+       (user.authenticate(req.body.password)) {
+        console.log(user);
+        const { name, email } = user;
+        if (user.isVerified) {
+          res.status(200).json({
+            status:1,
+            message:"User Login Success",
+            user
+          });
+        } else
+          res.status(200).json({
+            status: 0,
+
+            message: "User Not Verified",
+          });
+      } else {
+        res.status(200).json({ status: 0, message: "Email or Password Incorrect" });
       }
     }
   });
 };
 
-exports.verify = (req,res) =>{
-
-  User.updateOne({email:req.user.email},{isVerified : true},((error,user)=>{
-        if(error) res.status(500).json({message:error})
-        if(user) res.status(201).json({message:'Update Success'})
-  }))
-}
-
+exports.verify = (req, res) => {
+  User.updateOne(
+    { email: req.user.email },
+    { isVerified: true },
+    (error, user) => {
+      if (error) res.status(500).json({ message: error });
+      if (user) res.send("Update Success");
+    }
+  );
+};
