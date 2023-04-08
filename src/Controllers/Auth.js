@@ -69,7 +69,7 @@ exports.googleLogin = (req,res) =>{
       });
 
 
-    }else res.status(200).json({status:1,message:"PreUser"})
+    }else res.status(200).json({status:1,message:user._id})
   })
 }
 
