@@ -6,18 +6,16 @@ exports.createMeeting = (req, res) => {
   console.log(req.body);
   const { roomId, host, maxParticipant } = req.body;
   meetingSchema.findOne({ roomId: roomId }).exec((error, meeting) => {
-    if (meeting){
+    if (meeting) {
       console.log("Duplicate RoomId");
       res.status(500).json({
         meesage: "Please Enter Different Room Id",
       });
-    }
-    else {
+    } else {
       const uid = 0;
       const role = RtcRole.PUBLISHER;
       const expirationTimeInSeconds = 86400;
-      const currentTimestamp = Math.floor(Date.now());
-      console.log(currentTimestamp);
+      const currentTimestamp = Math.floor(Date.now() / 1000); 
       const privilegeExpiredTs = currentTimestamp + expirationTimeInSeconds;
       const roomToken = RtcTokenBuilder.buildTokenWithUid(
         process.env.APP_ID,
@@ -35,8 +33,8 @@ exports.createMeeting = (req, res) => {
         maxParticipant,
       });
       _meeting.save((error, room) => {
-        if (error) res.status(500).json({ status:1, message: error });
-        else if(room) {
+        if (error) res.status(500).json({ status: 1, message: error });
+        else if (room) {
           console.log("Room Created");
           res.status(201).json({
             status: 1,
@@ -51,7 +49,6 @@ exports.createMeeting = (req, res) => {
 exports.getRooms = (req, res) => {
   console.log("Room Req...");
   meetingSchema.find({}).exec((error, rooms) => {
-  
     if (error) res.status(400).json({ status: 0, message: "Error Occurred" });
     res.status(201).json({
       status: 1,
