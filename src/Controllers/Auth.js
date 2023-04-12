@@ -2,6 +2,8 @@ const User = require("../Models/user");
 const jwt = require("jsonwebtoken");
 const user = require("../Models/user");
 
+
+
 exports.signup = (req, res, next) => {
   User.findOne({ email: req.query.email }).exec((error, user) => {
     if (user)
@@ -64,7 +66,7 @@ exports.googleLogin = (req,res) =>{
         if (error) res.status(500).json({ status: 0, message: error });
         if (data) {
           console.log("Google Login Success");
-          res.status(201).json({ status: 1, message: user._id });
+          res.status(201).json({ status: 1, message: data._id });
         }
       });
 
@@ -99,7 +101,6 @@ exports.login = (req, res) => {
         } else
           res.status(200).json({
             status: 0,
-
             message: "User Not Verified",
           });
       } else {
