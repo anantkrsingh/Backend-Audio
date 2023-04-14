@@ -1,23 +1,12 @@
-import mongoose from "mongoose";
+const mongoose =  require( "mongoose");
 
-const session = new mongoose.Schema({
+const Session = new mongoose.Schema({
     room:{
-        type:String,
-        required:true
+        type:String
     },
-    users:[
-        {
-            userName:{
-                type:String
-            },
-            userUID:{
-                type:String
-            },
-            ava
-
-
-
-        }
-
-    ]
+    users:{
+        type:Number
+    }
 })
+const session  =  mongoose.model("Sessions",Session)
+module.exports = session

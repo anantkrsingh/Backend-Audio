@@ -31,6 +31,8 @@ exports.createMeeting = (req, res) => {
         roomId,
         roomToken,
         maxParticipant,
+        enrolledUsers:0
+        
       });
       _meeting.save((error, room) => {
         if (error) res.status(500).json({ status: 1, message: error });

@@ -12,6 +12,7 @@ const app = express();
 env.config();
 const authRoutes = require('./Routes/Auth');
 const roomRoutes = require('./Routes/Generator')
+const sessionRoutes = require('./Routes/Session')
 const { createMeeting } = require('./Controllers/Generator');
 
 
@@ -22,7 +23,9 @@ app.use(bodyParser.urlencoded({extended:true}))
 app.use(cors());
 
 app.use('/api',authRoutes);
-app.use('/api/meeting',roomRoutes )
+app.use('/api/meeting',roomRoutes)
+
+app.use("/session",sessionRoutes)
 
 
 
@@ -37,11 +40,10 @@ app.listen("3000",()=>{
 
 mongoose
   .connect(
-    `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@cluster0.ksqm3qe.mongodb.net/test`
+    `mongodb://127.0.0.1:27017/audio-db`
   )
   .then(() => {
     console.log("DB Connected");
   }).catch((error)=>{
     console.log(error)
-  
   });

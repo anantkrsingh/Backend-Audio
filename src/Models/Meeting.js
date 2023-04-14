@@ -18,6 +18,9 @@ const meetingSchema  = new mongoose.Schema({
         type: String,
         required: true
     },
+    enrolledUsers : {
+            type:Number
+    },
     enrolledAvatars:{
         type:String
     },
