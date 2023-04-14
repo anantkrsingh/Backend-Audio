@@ -32,7 +32,7 @@ exports.signup = (req, res, next) => {
               expiresIn: "10min",
             }
           );
-          const link = `http://192.168.1.7:3000/api/verify/?token=${token}`;
+          const link = `https://api.englishspeakinghub.online/api/verify/?token=${token}`;
           console.log(link);
           (req.email = req.query.email), (req.link = link);
           //   res
@@ -122,7 +122,7 @@ exports.verify = (req, res) => {
     { email: req.user.email },
     { isVerified: true },
     (error, user) => {
-      if (error) res.status(500).json({ message: error });
+      if (error) res.send("Invalid URL Please Contact Administrator");
       if (user) res.send("Update Success");
     }
   );
