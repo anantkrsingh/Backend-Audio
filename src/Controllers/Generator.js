@@ -8,7 +8,8 @@ exports.createMeeting = (req, res) => {
   meetingSchema.findOne({ roomId: roomId }).exec((error, meeting) => {
     if (meeting) {
       console.log("Duplicate RoomId");
-      res.status(500).json({
+      res.status(201).json({
+        status:0,
         meesage: "Please Enter Different Room Id",
       });
     } else {

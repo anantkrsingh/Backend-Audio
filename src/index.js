@@ -25,7 +25,7 @@ app.use(cors());
 app.use('/api',authRoutes);
 app.use('/api/meeting',roomRoutes)
 
-app.use("/session",sessionRoutes)
+app.use("/api/session",sessionRoutes)
 
 
 

@@ -20,13 +20,14 @@ exports.enroll = (req, res) => {
 
 
 exports.enlist = (req,res) =>{
+  console.log("enlist req...");
     meetingSchema.findOne({ roomId: req.query.room }).exec((error, room) => {
         if (room) {
             if(room.enrolledUsers == 1 || room.enrolledUsers == 0){
-                meetingSchema.deleteOne({roomId:req.query.room}, (error,data)=>{
-                    if(error) res.status(201).json({status:"Internal Error",message:"Intenal Error"})
-                    else res.status(201).json({status:1,message:data})
-                })
+                // meetingSchema.deleteOne({roomId:req.query.room}, (error,data)=>{
+                //     if(error) res.status(201).json({status:"Internal Error",message:"Intenal Error"})
+                //     else res.status(201).json({status:1,message:data})
+                // })
             } else{
                 meetingSchema.updateOne(
                     { roomId: req.query.room },
