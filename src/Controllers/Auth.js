@@ -1,6 +1,7 @@
 const User = require("../Models/user");
 const jwt = require("jsonwebtoken");
 const user = require("../Models/user");
+const Premium = require("../Models/PremiumUser")
 
 
 
@@ -112,8 +113,8 @@ exports.login = (req, res) => {
 
 exports.getUser = (req,res)=>{
   User.findOne({_id:req.query.user}).exec((error,user)=>{
-    if(error) res.status(500).json({status:0, message:"Error User"})
-    else if(user) res.status(201).json({status:1,user})
+     if(user) res.status(201).json({status:1,user})
+     else res.status(500).json({status:0, message:"Error User"})
   })
 }
 
@@ -127,3 +128,34 @@ exports.verify = (req, res) => {
     }
   );
 };
+
+exports.addToPremium = (req,res)=>{
+  User.updateOne(
+    {_id : req.body.uid },
+    {isPremium : true}, 
+    (error,user) =>{
+      if(user) {
+        Premium.findOne({uid:req.body.uid}).exec((error,puser)=>{
+          if(puser) {
+            Premium.updateOne({uid:req.body.uid}, {vaildTill: req.body.vaildTill}, (error,newUser)=>{
+              if(newUser) res.status(201).json({status:1,message:newUser})
+              else res.status(200).json({status:0,message:error})
+            })
+          } else{
+            const {uid,vaildTill} = req.body
+            const _puser = new Premium({
+              uid,vaildTill
+            });
+            _puser.save((error,npuser)=>{
+              if(error) res.status(200).json({status:0,message:error})
+              else res.status(201).json({status:1,mesaage:npuser})
+            })
+          }
+        }
+        )
+      }
+      else res.status(200).json({status:0,message:error})
+    }
+  )
+  
+}

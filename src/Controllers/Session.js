@@ -43,3 +43,7 @@ exports.enlist = (req,res) =>{
         }
       });
 }
+
+exports.addTimestamp = (req,res) =>{
+  
+}

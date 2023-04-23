@@ -1,10 +1,10 @@
 const mongoose =  require( "mongoose");
 
 const Session = new mongoose.Schema({
-    room:{
+    uid:{
         type:String
     },
-    users:{
+    duration:{
         type:Number
     }
 })
