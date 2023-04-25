@@ -27,18 +27,22 @@ exports.createMeeting = (req, res) => {
         privilegeExpiredTs
       );
       console.log("Token Generated", roomToken);
+      meetingSchema.createIndexes({ createdAt: 1 ,expireAfterSeconds: 10 } , (error,data)=>{
+        console.log(error);
+        console.log(data);
+      });
       const _meeting = new meetingSchema({
         host,
         roomId,
         roomToken,
         maxParticipant,
         enrolledUsers:0
-        
       });
       _meeting.save((error, room) => {
         if (error) res.status(500).json({ status: 1, message: error });
         else if (room) {
           console.log("Room Created");
+          removeRoom(room._id)
           res.status(201).json({
             status: 1,
             message: "Token Generated",
@@ -68,3 +72,12 @@ exports.getRoom = (req, res) => {
     else res.status(201).json({ status: 0, message: "Invalid URL" });
   });
 };
+
+const removeRoom  = async (_id) =>{
+  await setTimeout(() => {
+    meetingSchema.findOneAndDelete({_id:_id}, (error,deleted)=>{
+      if(deleted) console.log(deleted)
+    })
+  }, 10800);
+  
+}

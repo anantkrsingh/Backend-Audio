@@ -45,5 +45,21 @@ exports.enlist = (req,res) =>{
 }
 
 exports.addTimestamp = (req,res) =>{
-  
+  session.findOne({uid:req.body.uid}).exec((error,timestamp)=>{
+    if(timestamp) {
+      session.updateOne({uid:req.body.uid},{duration: Number(timestamp.duration)+1}, (error,data)=>{
+        if (data) res.status(201).json({message:data,status:1})
+        else res.status(200).json({message:"Error occured",status:1})
+      })
+    }else{
+      const _timestamp = new session({
+        uid:req.body.uid,
+        duration: 1
+      })
+      _timestamp.save((error,message)=>{
+        if(error) res.status(200).json({message:"Error",status:0})
+        else res.status(201).json({message:message,status:1})
+      })
+    }
+  })
 }
