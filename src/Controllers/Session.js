@@ -88,12 +88,13 @@ exports.addTimestamp = (req, res) => {
 
 exports.getTimestamp = (req, res) => {
   session.findOne({ uid: req.query.uid }).exec((error, session) => {
+    const date = new Date()
     if (session)
       res.status(200).json({
         status: 1,
         duration: session.duration,
         lastUpdated: session.lastUpdated,
       });
-    else res.status(200).json({ status: 1, duration: 0 });
+    else res.status(200).json({ status: 1, duration: 0, lastUpdated: date.getDate() });
   });
 };
