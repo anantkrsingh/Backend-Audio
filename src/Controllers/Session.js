@@ -46,15 +46,16 @@ exports.addTimestamp = (req, res) => {
   session.findOne({ uid: req.body.uid }).exec((error, timestamp) => {
     const now = new Date();
     if (timestamp) {
-      if (timestamp.lastUpdated === now.getDate()) {
+      if (timestamp.lastUpdated != now.getDate()) {
+        console.log("New Date");
         session.updateOne(
           { uid: req.body.uid },
           { duration: 0 },
           { lastUpdated: now.getDate() },
           (error, data) => {
+            
             if (data) {
-              if (data.lastUpdated)
-                res.status(201).json({ message: data, status: 1 });
+              res.status(201).json({ message: data, status: 1 });
             } else
               res.status(200).json({ message: "Error occured", status: 1 });
           }
@@ -65,7 +66,7 @@ exports.addTimestamp = (req, res) => {
           { duration: Number(timestamp.duration) + 1 },
           (error, data) => {
             if (data) {
-              if (data.lastUpdated)
+            
                 res.status(201).json({ message: data, status: 1 });
             } else
               res.status(200).json({ message: "Error occured", status: 1 });
@@ -88,13 +89,16 @@ exports.addTimestamp = (req, res) => {
 
 exports.getTimestamp = (req, res) => {
   session.findOne({ uid: req.query.uid }).exec((error, session) => {
-    const date = new Date()
+    const date = new Date();
     if (session)
       res.status(200).json({
         status: 1,
         duration: session.duration,
         lastUpdated: session.lastUpdated,
       });
-    else res.status(200).json({ status: 1, duration: 0, lastUpdated: date.getDate() });
+    else
+      res
+        .status(200)
+        .json({ status: 1, duration: 0, lastUpdated: date.getDate() });
   });
 };
