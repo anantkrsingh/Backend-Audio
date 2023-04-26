@@ -78,6 +78,6 @@ const removeRoom  = async (_id) =>{
     meetingSchema.findOneAndDelete({_id:_id}, (error,deleted)=>{
       if(deleted) console.log(deleted)
     })
-  }, 10800);
+  }, 10800000);
   
 }

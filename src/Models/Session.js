@@ -6,6 +6,9 @@ const Session = new mongoose.Schema({
     },
     duration:{
         type:Number
+    },
+    lastUpdated:{
+        type:Number
     }
 })
 const session  =  mongoose.model("Sessions",Session)
