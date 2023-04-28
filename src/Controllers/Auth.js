@@ -67,12 +67,12 @@ exports.googleLogin = (req,res) =>{
         if (error) res.status(500).json({ status: 0, message: error });
         if (data) {
           console.log("Google Login Success");
-          res.status(201).json({ status: 1, message: data._id });
+          res.status(201).json({ status: 1, message: data._id, user:data });
         }
       });
 
 
-    }else res.status(200).json({status:1,message:user._id})
+    }else res.status(200).json({status:1,message:user._id,user:user})
   })
 }
 
@@ -137,14 +137,14 @@ exports.addToPremium = (req,res)=>{
       if(user) {
         Premium.findOne({uid:req.body.uid}).exec((error,puser)=>{
           if(puser) {
-            Premium.updateOne({uid:req.body.uid}, {vaildTill: req.body.vaildTill}, (error,newUser)=>{
+            Premium.updateOne({uid:req.body.uid}, {validTill: req.body.validTill}, (error,newUser)=>{
               if(newUser) res.status(201).json({status:1,message:newUser})
               else res.status(200).json({status:0,message:error})
             })
           } else{
-            const {uid,vaildTill} = req.body
+            const {uid,validTill} = req.body
             const _puser = new Premium({
-              uid,vaildTill
+              uid,validTill
             });
             _puser.save((error,npuser)=>{
               if(error) res.status(200).json({status:0,message:error})
@@ -158,4 +158,10 @@ exports.addToPremium = (req,res)=>{
     }
   )
   
+}
+exports.getPremium = (req,res) =>{
+  Premium.findOne({uid: req.query.uid}).exec((error,premium)=>{
+    if(premium) res.status(200).json({status:1,validTill:premium.validTill})
+    else res.status(201).json({status:0,message:"Error"})
+  })
 }

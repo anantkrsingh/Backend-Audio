@@ -1,6 +1,6 @@
 const express = require('express');
 
-const {signup, verify, login, googleLogin, getUser, addToPremium} = require('../Controllers/Auth');
+const {signup, verify, login, googleLogin, getUser, addToPremium, getPremium} = require('../Controllers/Auth');
 const {sendEmail}   = require( '../Controllers/SendEmail');
 const { verifyJWT } = require('../Middlewares/TokenVerifiers');
 const router =  express.Router();
@@ -12,6 +12,7 @@ router.get("/google", googleLogin);
 router.get("/sendMail",sendEmail);
 router.get("/verify",verifyJWT,verify);
 router.post("/premium",addToPremium);
+router.get("/premium/get",getPremium);
 
 
 module.exports = router;

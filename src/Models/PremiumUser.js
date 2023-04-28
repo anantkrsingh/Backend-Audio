@@ -6,7 +6,7 @@ const Premium = new mongoose.Schema({
         type:String,
         required:true
     },
-    vaildTill:{
+    validTill:{
         type:String,
         required:true
     }
