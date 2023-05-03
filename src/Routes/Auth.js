@@ -1,11 +1,12 @@
 const express = require('express');
 
-const {signup, verify, login, googleLogin, getUser, addToPremium, getPremium} = require('../Controllers/Auth');
+const {signup, verify, login, googleLogin, getUser, addToPremium, getPremium, resendOTP} = require('../Controllers/Auth');
 const {sendEmail}   = require( '../Controllers/SendEmail');
 const { verifyJWT } = require('../Middlewares/TokenVerifiers');
 const router =  express.Router();
 
 router.get("/signup",signup, sendEmail);
+router.get('/resend',resendOTP,sendEmail);
 router.post("/signin", login);
 router.get("/user/get",getUser);
 router.get("/google", googleLogin);
