@@ -29,7 +29,7 @@ exports.sendEmail = (req, res) => {
         .json({ status: 0, message: "Error Sending Email Please Try Again" });
     } else {
       console.log(info);
-      return res.status(201).json({ status: 1, message: "An Verification link has Been Sent To Your Email Address" });
+      return res.status(201).json({ status: 1, message: "A Verification link has Been Sent To Your Email Address" });
     }
   });
   
