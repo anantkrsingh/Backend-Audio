@@ -34,9 +34,9 @@ exports.signup = (req, res, next) => {
           const link = `https://api.englishspeakinghub.online/api/verify/?token=${token}`;
           console.log(link);
           (req.email = req.query.email), (req.link = link);
-          //   res
-          //     .status(201)
-          //     .json({ status: 1, message: "User Successfully Registered" }),
+            res
+              .status(201)
+              .json({ status: 1, message: "User Successfully Registered" }),
           next();
         }
       });
@@ -88,17 +88,18 @@ exports.login = (req, res) => {
       } else if (user.authenticate(req.body.password)) {
         console.log(user);
         const { name, email } = user;
-        if (user.isVerified) {
-          res.status(200).json({
-            status: 1,
-            message: "User Login Success",
-            user,
-          });
-        } else
-          res.status(200).json({
-            status: 0,
-            message: "User Not Verified",
-          });
+        res.status(200).json({
+          status: 1,
+          message: "User Login Success",
+          user,
+        });
+        // if (user.isVerified) {
+          
+        // } else
+        //   res.status(200).json({
+        //     status: 0,
+        //     message: "User Not Verified",
+        //   });
       } else {
         res
           .status(200)
