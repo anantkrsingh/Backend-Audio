@@ -34,10 +34,9 @@ exports.signup = (req, res, next) => {
           const link = `https://api.englishspeakinghub.online/api/verify/?token=${token}`;
           console.log(link);
           (req.email = req.query.email), (req.link = link);
-            res
-              .status(201)
-              .json({ status: 1, message: "User Successfully Registered" }),
-          next();
+          res
+            .status(201)
+            .json({ status: 1, message: "User Successfully Registered" });
         }
       });
     }
@@ -94,7 +93,7 @@ exports.login = (req, res) => {
           user,
         });
         // if (user.isVerified) {
-          
+
         // } else
         //   res.status(200).json({
         //     status: 0,
@@ -164,7 +163,7 @@ exports.getPremium = (req, res) => {
   });
 };
 
-exports.resendOTP = (req, res , next) => {
+exports.resendOTP = (req, res, next) => {
   const token = jwt.sign(
     {
       email: req.query.email,
